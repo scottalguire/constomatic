@@ -1,0 +1,1 @@
+{"version":3,"file":"style.css","sources":["style.scss","welcome/_welcome-base.scss"],"sourcesContent":["@import \"welcome/welcome-base\";\r\n","h1 {\r\n  color: #222;\r\n}\r\n"],"names":[],"mappings":"ACAA,AAAA,EAAE,CAAC;EACD,KAAK,EAAE,IAAI,GACZ"}
