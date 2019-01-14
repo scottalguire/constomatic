@@ -1,5 +1,5 @@
 {
-  "name": "hashomatic",
+  "name": "hash-o-matic",
   "version": "1.0.0",
   "description": "Injects a random alphanumeric hash as a value in a specified set of PHP constants. Designed for use in a watch task as a means of automated cachebusting for a WordPress script/style enqueue.",
   "main": "index.js",
