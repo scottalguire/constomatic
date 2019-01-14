@@ -3,11 +3,17 @@ var plumber = require("gulp-plumber");
 var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 var browserSync = require("browser-sync");
-var bump = require("./index.js");
+var hashomatic = require("./index.js");
 
 //local Tasks
-gulp.task("bump-css", function() {
-  bump({ inFilePath: "/functions.php", outPath: "/" });
+gulp.task("hashomatic", function() {
+  hashomatic({
+    inFilePath: "/functions.php",
+    outPath: "/",
+    constNames: ["CSS_VERSION"],
+    semVer: false,
+    hashLength: 7
+  });
 });
 
 gulp.task("browser-sync", function() {
@@ -39,6 +45,6 @@ gulp.task("styles", function() {
 });
 
 gulp.task("default", ["browser-sync"], function() {
-  gulp.watch("library/scss/**/*.scss", ["styles", "bump-css"]);
+  gulp.watch("library/scss/**/*.scss", ["styles", "hashomatic"]);
   gulp.watch("*.php", ["bs-reload"]);
 });

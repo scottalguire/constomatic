@@ -3,8 +3,8 @@
  * Child Theme Specific Scripts
   */
 
-define('CSS_VERSION', '1.0.0');
-define('JS_VERSION', '1.0.0');
+define('CSS_VERSION', 'gbkPNaG');
+define('JS_VERSION', 'iO75j');
 
 function child_theme_enqueue_scripts() {
 	// register main stylesheet
