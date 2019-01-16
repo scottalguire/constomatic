@@ -4,6 +4,8 @@
 
 `$ npm install -D constomatic`
 
+![constomatic screen capture](screencap.gif)
+
 ## Usage
 
 Gulp not required, but recommended.
@@ -15,7 +17,7 @@ Create a gulp task. [_(See options reference below)_](#options)
 ```javascript
 var constomatic = require("constomatic");
 
-gulp.task("hash-css", function() {
+gulp.task("bump-css", function() {
   constomatic({
     src: "functions.php",
     dest: "/",
@@ -27,7 +29,7 @@ gulp.task("hash-css", function() {
 **/gulpfile.js** _(Gulp v4 example)_
 
 ```javascript
-var constomatic = require("constomatic");
+const constomatic = require("constomatic");
 
 const updateStylesVersion = cb => {
   constomatic({
@@ -55,7 +57,7 @@ Run the task in terminal, or set it as a part of your watch setup.
 
 ```javascript
 gulp.task("default", ["browser-sync"], function() {
-  gulp.watch("library/scss/**/*.scss", ["styles", "hash-css"]);
+  gulp.watch("library/scss/**/*.scss", ["styles", "bump-css"]);
   gulp.watch("*.php", ["bs-reload"]);
 });
 ```
@@ -86,14 +88,14 @@ Now you can echo the const values into any corresponding **wp_register_style/scr
 Type: `String`  
 Default: `"/build/functions.php"`
 
-Path to the source file. Usually set to `"/functions.php"`
+Path to the source file. Usually set to `"functions.php"`
 
 **dest**
 
 Type: `String`  
-Default: `"/build"`
+Default: `"/"`
 
-Path to the folder where file with the hashed consts will be output. Usually set to `"/"`
+Path to the folder where file with the hashed consts will be output.
 
 **constName**
 
