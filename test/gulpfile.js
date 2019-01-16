@@ -3,13 +3,13 @@ var plumber = require("gulp-plumber");
 var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 var browserSync = require("browser-sync");
-var hashomatic = require("./index.js");
+var constomatic = require("constomatic");
 
 //local Tasks
-gulp.task("hashomatic", function() {
-  hashomatic({
-    inFilePath: "/functions.php",
-    outPath: "/",
+gulp.task("constomatic", function() {
+  constomatic({
+    src: "functions.php",
+    dest: "/",
     constNames: ["CSS_VERSION"],
     semVer: false,
     hashLength: 7
@@ -45,6 +45,6 @@ gulp.task("styles", function() {
 });
 
 gulp.task("default", ["browser-sync"], function() {
-  gulp.watch("library/scss/**/*.scss", ["styles", "hashomatic"]);
+  gulp.watch("library/scss/**/*.scss", ["styles", "constomatic"]);
   gulp.watch("*.php", ["bs-reload"]);
 });

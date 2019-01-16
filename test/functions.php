@@ -3,7 +3,7 @@
  * Child Theme Specific Scripts
   */
 
-define('CSS_VERSION', 'gbkPNaG');
+define('CSS_VERSION', '6yOzb32');
 define('JS_VERSION', 'iO75j');
 
 function child_theme_enqueue_scripts() {

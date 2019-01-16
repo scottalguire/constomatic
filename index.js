@@ -3,13 +3,13 @@ var path = require("path");
 var colors = require("colors");
 var check = require("check-types");
 
-var hashomatic = function(settings) {
+var constomatic = function(settings) {
   /**
    * Default settings + user settings
    */
   const config = {
-    inFilePath: "/build/functions.php",
-    outPath: "/build",
+    src: "functions.php",
+    dest: "/",
     constNames: [],
     semVer: false,
     hashLength: 6,
@@ -25,8 +25,8 @@ var hashomatic = function(settings) {
           ...config
         },
         {
-          inFilePath: check.string,
-          outPath: check.string,
+          src: check.string,
+          dest: check.string,
           constNames: check.array,
           semVer: check.boolean,
           hashLength: check.number
@@ -50,7 +50,10 @@ var hashomatic = function(settings) {
     /**
      * Read the input .php file, call modifyInputData with php data
      */
-    fs.readFile(__dirname + config.inFilePath, "utf8", function(err, data) {
+    fs.readFile(path.join(path.resolve("."), config.src), "utf8", function(
+      err,
+      data
+    ) {
       if (err) {
         return console.log(err);
       }
@@ -73,27 +76,32 @@ var hashomatic = function(settings) {
    */
   function writeNewFile(data) {
     // console.log(data);
-    fs.mkdir(__dirname + config.outPath, { recursive: true }, err => {
-      // build folder exists just update file
-      // if build folder doesnt exist create it, and writeNewFile ( recursive )
-      fs.writeFile(
-        path.join(__dirname + config.inFilePath),
-        data,
-        "utf8",
-        function(err) {
-          if (err) {
-            return console.log(err);
+    fs.mkdir(
+      path.join(path.resolve("."), config.dest),
+      { recursive: true },
+      err => {
+        // build folder exists just update file
+        // if build folder doesnt exist create it, and writeNewFile ( recursive )
+        fs.writeFile(
+          path.join(path.resolve("."), config.src),
+          data,
+          "utf8",
+          function(err) {
+            if (err) {
+              return console.log(err);
+            }
+            console.log(
+              colors.green(
+                `New file written to ${path.join(
+                  path.resolve("."),
+                  config.dest
+                )}`
+              )
+            );
           }
-          console.log(
-            colors.green(
-              `New file written to ${__dirname +
-                config.outPath +
-                config.inFilePath}`
-            )
-          );
-        }
-      );
-    });
+        );
+      }
+    );
   }
 
   /**
@@ -145,15 +153,15 @@ var hashomatic = function(settings) {
         let foundConst = phpConst.join(""); // define('CSS_VERSION', '1.0.0');
         console.log(
           `\n${colors.rainbow(
-            "HASH-O-MATIC"
+            "CONST-O-MATIC"
           )}: found php constant "${colors.green(foundConst)}", in file ${
-            config.inFilePath
+            config.src
           }. \n`
         );
         matches.push({ name: name, def: foundConst });
       } else {
         console.log(
-          `\n${colors.rainbow("HASH-O-MATIC")}: ${colors.red(
+          `\n${colors.rainbow("CONST-O-MATIC")}: ${colors.red(
             `Error: No php constants found to hash.`
           )}`
         );
@@ -189,7 +197,7 @@ var hashomatic = function(settings) {
       }
     } else {
       return new Promise((resolve, reject) => {
-        reject(colors.red(`Hashomatic aborted.`));
+        reject(colors.red(`constomatic aborted.`));
       });
     }
   }
@@ -233,4 +241,4 @@ var hashomatic = function(settings) {
   }
 };
 
-module.exports = hashomatic;
+module.exports = constomatic;

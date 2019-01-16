@@ -1,24 +1,46 @@
-# hash-o-matic
+# constomatic
 
-## How it works
+## Install
 
-Create a gulp task. _(See options reference below)_
+`$ npm install -D constomatic`
 
-**/gulpfile.js**
+## Usage
+
+Gulp not required, but recommended.
+
+Create a gulp task. [_(See options reference below)_](#options)
+
+**/gulpfile.js** _(Gulp v3 example)_
 
 ```javascript
+var constomatic = require("constomatic");
+
 gulp.task("hash-css", function() {
-  hashomatic({
-    inFilePath: "/functions.php",
-    outPath: "/",
-    constNames: ["CSS_VERSION", "JS_VERSION"],
-    semVer: false,
-    hashLength: 7
+  constomatic({
+    src: "functions.php",
+    dest: "/",
+    constNames: ["CSS_VERSION", "JS_VERSION"]
   });
 });
 ```
 
-Create at least one const (define style) definition in your _inFilePath_ php file and set any alphanumeric string as the value.
+**/gulpfile.js** _(Gulp v4 example)_
+
+```javascript
+var constomatic = require("constomatic");
+
+const updateStylesVersion = cb => {
+  constomatic({
+    src: "functions.php",
+    dest: "/",
+    constNames: ["CSS_VERSION"],
+    hashLength: 7
+  });
+  cb();
+};
+```
+
+Create at least one const (define style) definition in your _src_ php file and set any alphanumeric string as the value.
 
 **/functions.php**
 
@@ -29,11 +51,7 @@ define('JS_VERSION', 'abc123');
 
 Run the task in terminal, or set it as a part of your watch setup.
 
-**In terminal**
-
-`$ gulp hash-css`
-
-**(or more likely, a watch task)**
+**Add to a watch task (gulp@v3)**
 
 ```javascript
 gulp.task("default", ["browser-sync"], function() {
@@ -42,27 +60,63 @@ gulp.task("default", ["browser-sync"], function() {
 });
 ```
 
+**or gulp@v4**
+
+```javascript
+const watchStyles = () => {
+  watch("library/scss/**/*.scss", series(compileStyles, updateStylesVersion));
+};
+```
+
 Check out your newly hashed values in your php file.
 
 **/functions.php**
 
 ```php
 define('CSS_VERSION', 'gbkPNaG');
-define('JS_VERSION', 'iO75j');
+define('JS_VERSION', 'iO75jf5');
 ```
 
 Now you can echo the const values into any corresponding **wp_register_style/script** statements
 
 ## Options
 
-Create a gulp task with the following options.
+**src**
 
-**inFilePath {string}**: (Recommended, default: "/build/functions.php") Where the file is you are going to be using as the source
+Type: `String`  
+Default: `"/build/functions.php"`
 
-**outPath {string}**: (Recommended, default: "/build") Where the new file with the hashed consts will be output (make this the same as inFilePath to update hash more than once)
+Path to the source file. Usually set to `"/functions.php"`
 
-**constName {array}**: (Required) Accepts an array of php constant names to be hashed
+**dest**
 
-**semVer {boolean}**: (Optional, default: false) Turning this on will increment consts with a value scheme that matches 0.0.0. _NOTE: this feature has not been tested fully, inFilePath file must have exisiting define('CONST_NAME', '1.0.0');_
+Type: `String`  
+Default: `"/build"`
 
-**hashLength {number}**: (Optional, default: 6) Specifies the number of characters to be used in the hashed value provided to each constant
+Path to the folder where file with the hashed consts will be output. Usually set to `"/"`
+
+**constName**
+
+Type: `Array`
+
+Accepts an array of php constant names to be hashed
+
+**hashLength**
+
+Type: `Number`  
+Default: `6`
+
+Specifies the number of characters to be used in the hashed value provided to each constant
+
+---
+
+**semVer** - _Experimental Only! This feature is in development_
+
+Type: `Boolean`  
+Default: `false`
+
+"Semantic-ish" versioning. Turning this on will increment a 0-9 counter using a format matching `define('CONST_NAME', '1.0.0');`
+
+## LICENSE
+
+MIT
